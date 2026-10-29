@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0] - 2026-10-30
+
+### Added
+- Prefab Replacer: swap the selection for a prefab, keeping position, parent and Hierarchy order.
+- Find References: assets and open-scene objects (including prefab instances and script users) that use an asset.
+- Align & Distribute: min/center/max on X, Y, Z by bounds or pivots, relative to the selection or the active object.
+- Favorites: per-project, per-user list of assets with drag in, drag out and double-click to open.
+- UI Scroll UV (runtime): endless RawImage scrolling that tiles at the texture's size.
+
+### Changed
+- The runtime assembly now references `UnityEngine.UI`; the package depends on `com.unity.ugui`.
+
 ## [1.1.0] - 2026-10-30
 
 ### Added

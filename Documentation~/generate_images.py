@@ -175,21 +175,31 @@ def field(x, y, w, h=20, value="", rx=3):
 
 # ---------------------------------------------------------------- banner
 
+RUNTIME_ACCENT = "#7EE787"
+
+# (label, icon paths on a 24x24 grid, is runtime helper)
 BANNER_ICONS = [
-    ("Hierarchy", '<path d="M4 5h16M8 12h12M8 19h12M4 5v14h4M4 12h4"/>'),
-    ("Scene Switcher", '<path d="M12 3 21 8 12 13 3 8z"/><path d="M3 12.5 12 17.5 21 12.5"/><path d="M3 16.5 12 21.5 21 16.5"/>'),
-    ("Play From #0", '<circle cx="12" cy="12" r="9"/><path d="M10 8.5 15.5 12 10 15.5z"/>'),
-    ("Missing Scripts", '<path d="M12 3.5 21.5 20H2.5z"/><path d="M12 9.5v5M12 17.3v.2"/>'),
-    ("Batch Renamer", '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/>'),
-    ("Drop To Ground", '<path d="M12 3v11"/><path d="M7.5 9.5 12 14l4.5-4.5"/><path d="M3 20h18"/>'),
-    ("Selection History", '<path d="M3.5 12a8.5 8.5 0 1 0 2.5-6"/><path d="M3 4v4.5h4.5"/><path d="M12 7.5V12l3 2"/>'),
-    ("Screenshots", '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8.5 7l1.5-3h4l1.5 3"/><circle cx="12" cy="13.5" r="3.5"/>'),
-    ("Scene Auto Save", '<path d="M5 3h11l4 4v14H4V3z"/><path d="M8 3v5h7V3"/><rect x="7.5" y="13" width="9" height="5"/>'),
+    ("Hierarchy", '<path d="M4 5h16M8 12h12M8 19h12M4 5v14h4M4 12h4"/>', False),
+    ("Scene Switcher", '<path d="M12 3 21 8 12 13 3 8z"/><path d="M3 12.5 12 17.5 21 12.5"/><path d="M3 16.5 12 21.5 21 16.5"/>', False),
+    ("Missing Scripts", '<path d="M12 3.5 21.5 20H2.5z"/><path d="M12 9.5v5M12 17.3v.2"/>', False),
+    ("Batch Renamer", '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/>', False),
+    ("Prefab Replacer", '<path d="M3 7.5 7 5.5l4 2v4l-4 2-4-2z"/><path d="M13 14.5l4-2 4 2v4l-4 2-4-2z"/><path d="M13.5 5.5H18v4.5"/><path d="M10.5 18.5H6V14"/>', False),
+    ("Find References", '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/><path d="M8 10.5h5"/>', False),
+    ("Align & Distribute", '<path d="M4 3v18"/><rect x="7" y="5" width="13" height="5" rx="1"/><rect x="7" y="14" width="8" height="5" rx="1"/>', False),
+    ("Favorites", '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/>', False),
+    ("Drop To Ground", '<path d="M12 3v11"/><path d="M7.5 9.5 12 14l4.5-4.5"/><path d="M3 20h18"/>', False),
+    ("Selection History", '<path d="M3.5 12a8.5 8.5 0 1 0 2.5-6"/><path d="M3 4v4.5h4.5"/><path d="M12 7.5V12l3 2"/>', False),
+    ("Screenshots", '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8.5 7l1.5-3h4l1.5 3"/><circle cx="12" cy="13.5" r="3.5"/>', False),
+    ("Scene Auto Save", '<path d="M5 3h11l4 4v14H4V3z"/><path d="M8 3v5h7V3"/><rect x="7.5" y="13" width="9" height="5"/>', False),
+    ("Read-Only Field", '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>', True),
+    ("UI Follow", '<rect x="6" y="2.5" width="12" height="5" rx="1.5"/><path d="M12 7.5v3"/><circle cx="12" cy="13.5" r="2.5"/><path d="M8 21v-2a4 4 0 0 1 8 0v2"/>', True),
+    ("UI Scroll UV", '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 12h9"/><path d="M13.5 9l3 3-3 3"/>', True),
+    ("Beta GUI", '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M6.5 8.5h7M6.5 12h5"/><path d="M6.5 15.5h3"/>', True),
 ]
 
 
 def banner():
-    W, H = 1040, 300
+    W, H = 1040, 320
     defs = f"""<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#141821"/><stop offset="1" stop-color="#1D2433"/></linearGradient>
 <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="{ACCENT}" stop-opacity="0.22"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
 <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#2A3242"/></pattern>
@@ -201,21 +211,26 @@ def banner():
     body += "</g>"
     body += r(0.5, 0.5, W - 1, H - 1, "none", rx=16, stroke="#2A3242")
 
-    body += t(56, 92, "UNITY PACKAGE", 12.5, ACCENT, weight=700, ls=2.5)
-    body += t(54, 146, "BerTaDEV Toolkit", 50, "#F0F4FA", weight=700)
-    body += t(56, 186, "Nine editor tools and three runtime helpers", 18, "#A7B1C2")
-    body += t(56, 211, "that take the everyday friction out of Unity.", 18, "#A7B1C2")
-    body += r(56, 232, 392, 34, "#0F131A", rx=17, stroke="#2C3546")
-    body += t(76, 254, "com.bertadev.toolkit  ·  v1.1.0  ·  Unity 2022.3+", 13, "#C9D4E5", cls="mono")
+    body += t(56, 102, "UNITY PACKAGE", 12.5, ACCENT, weight=700, ls=2.5)
+    body += t(54, 156, "BerTaDEV Toolkit", 50, "#F0F4FA", weight=700)
+    body += t(56, 196, "Thirteen editor tools and four runtime helpers", 18, "#A7B1C2")
+    body += t(56, 221, "that take the everyday friction out of Unity.", 18, "#A7B1C2")
+    body += r(56, 242, 392, 34, "#0F131A", rx=17, stroke="#2C3546")
+    body += t(76, 264, "com.bertadev.toolkit  ·  v1.2.0  ·  Unity 2022.3+", 13, "#C9D4E5", cls="mono")
 
-    x0, y0, tw, th, gap = 580, 47, 136, 62, 10
-    for i, (label, paths) in enumerate(BANNER_ICONS):
-        cx = x0 + (i % 3) * (tw + gap)
-        cy = y0 + (i // 3) * (th + gap)
-        body += r(cx, cy, tw, th, "#1F2633", rx=10, stroke="#2E3848")
-        body += (f'<g transform="translate({cx + tw / 2 - 11},{cy + 10}) scale({22 / 24})" fill="none" stroke="{ACCENT}" '
-                 f'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">{paths}</g>')
-        body += t(cx + tw / 2, cy + 50, label, 12.5, "#D5DEEA", anchor="middle")
+    x0, y0, tw, th, gap = 546, 26, 113, 54, 8
+    for i, (label, paths, is_runtime) in enumerate(BANNER_ICONS):
+        cx = x0 + (i % 4) * (tw + gap)
+        cy = y0 + (i // 4) * (th + gap)
+        color = RUNTIME_ACCENT if is_runtime else ACCENT
+        body += r(cx, cy, tw, th, "#1F2633", rx=9, stroke="#2E3848")
+        body += (f'<g transform="translate({cx + tw / 2 - 9.5},{cy + 8}) scale({19 / 24})" fill="none" stroke="{color}" '
+                 f'stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">{paths}</g>')
+        body += t(cx + tw / 2, cy + 43, label, 11.5, "#D5DEEA", anchor="middle")
+
+    ly = y0 + 4 * (th + gap) + 14
+    body += f'<circle cx="{x0 + 6}" cy="{ly - 4}" r="4" fill="{ACCENT}"/>' + t(x0 + 16, ly, "Editor tools", 12, DESC)
+    body += f'<circle cx="{x0 + 106}" cy="{ly - 4}" r="4" fill="{RUNTIME_ACCENT}"/>' + t(x0 + 116, ly, "Runtime helpers (BerTaDEV.Toolkit)", 12, DESC)
     return svg(W, H, body, defs)
 
 
@@ -556,18 +571,20 @@ def game_view(x, y, w, h, sky_top, sky_bottom, ground, grad_id):
 
 
 def runtime():
-    W, H = 1040, 300
+    W, H = 1040, 556
     body = stage(W, H)
     defs = ""
-    cw, gap, cy0 = 316, 16, 30
+    cw, ch, gap = 482, 240, 16
     cards = [
-        ("[ReadOnlyInspector]", "Shows the value, locks the field.", "mono"),
-        ("UI Follow To World", "Health bars and name tags that follow.", None),
-        ("Beta GUI", "Name, version, FPS and build on screen.", None),
+        ("[ReadOnlyInspector]", "Shows the value in the Inspector, but locks the field.", "mono"),
+        ("UI Follow To World", "Health bars and name tags that stay on their target.", None),
+        ("Beta GUI", "Name, version, FPS and build number on screen.", None),
+        ("UI Scroll UV", "Endless scrolling RawImage, tiled at the texture's size.", None),
     ]
     for i, (title, desc, cls) in enumerate(cards):
-        cx = 30 + i * (cw + gap)
-        body += r(cx, cy0, cw, 240, CARD, rx=12, stroke=CARD_BORDER)
+        cx = 30 + (i % 2) * (cw + gap)
+        cy0 = 30 + (i // 2) * (ch + gap)
+        body += r(cx, cy0, cw, ch, CARD, rx=12, stroke=CARD_BORDER)
         body += t(cx + 20, cy0 + 34, title, 17 if cls is None else 16, TITLE, weight=700, cls=cls)
         body += t(cx + 20, cy0 + 222, desc, 12.5, DESC)
         x, y, w = cx + 20, cy0 + 50, cw - 40
@@ -594,15 +611,29 @@ def runtime():
             body += view
             defs += d
             ground_y = y + 150 - 46
-            px = x + 120
+            px = x + 170
             body += r(px, ground_y - 40, 20, 40, "#D9DEE5", rx=10)
             body += t(px + 10, ground_y - 71, "Player", 10.5, "#FFFFFF", anchor="middle", weight=600)
             body += r(px - 20, ground_y - 66, 60, 7, "#14181D", rx=2) + r(px - 19, ground_y - 65, 41, 5, "#57C26A", rx=1.5)
             body += f'<path d="M{px + 10} {ground_y - 58} V{ground_y - 43}" stroke="{ACCENT}" stroke-width="1.4" stroke-dasharray="3 3"/>'
             body += t(px + 16, ground_y - 47, "offset", 10, ACCENT)
-            ex = x + 214
-            body += r(ex, ground_y - 24, 12, 24, "#C98A8A", rx=6)
-            body += r(ex - 9, ground_y - 33, 30, 5, "#14181D", rx=1.5) + r(ex - 8, ground_y - 32, 12, 3, "#E5534B", rx=1)
+            for ex in (x + 320, x + 372):
+                body += r(ex, ground_y - 24, 12, 24, "#C98A8A", rx=6)
+                body += r(ex - 9, ground_y - 33, 30, 5, "#14181D", rx=1.5) + r(ex - 8, ground_y - 32, 12 if ex < x + 350 else 24, 3, "#E5534B", rx=1)
+        elif i == 3:
+            tile = 48
+            defs += (f'<pattern id="scrolltile" width="{tile}" height="{tile}" patternUnits="userSpaceOnUse">'
+                     f'<rect width="{tile}" height="{tile}" fill="#26324A"/>'
+                     f'<path d="M-12 12 L12 -12 M0 {tile} L{tile} 0 M{tile - 12} {tile + 12} L{tile + 12} {tile - 12}" stroke="#30405E" stroke-width="12"/>'
+                     f'<circle cx="{tile / 2}" cy="{tile / 2}" r="5" fill="{ACCENT}" fill-opacity="0.85"/>'
+                     f'<animateTransform attributeName="patternTransform" type="translate" from="0 0" to="-{tile} 0" dur="2.4s" repeatCount="indefinite"/>'
+                     f'</pattern>')
+            body += r(x, y, w, 150, "#2D333B", rx=6, stroke="#444C56")
+            body += r(x + 1, y + 1, w - 2, 16, "#262C34", rx=5) + r(x + 1, y + 10, w - 2, 7, "#262C34") + t(x + 9, y + 13, "Game", 9.5, DESC)
+            body += r(x + 6, y + 21, w - 12, 123, "url(#scrolltile)")
+            body += r(x + w / 2 - 92, y + 64, 184, 38, "#0F131A", rx=19, opacity=0.85)
+            body += f'<path d="M{x + w / 2 - 72} {y + 83} H{x + w / 2 - 46} M{x + w / 2 - 66} {y + 77} L{x + w / 2 - 72} {y + 83} L{x + w / 2 - 66} {y + 89}" fill="none" stroke="{ACCENT}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
+            body += t(x + w / 2 - 36, y + 88, "speed (0.25, 0)", 13, TITLE, cls="mono")
         else:
             view, d = game_view(x, y, w, 150, "#A9C9E8", "#DCEAF6", "#7FB069", "sky2")
             body += view
@@ -615,6 +646,161 @@ def runtime():
     return svg(W, H, body, defs)
 
 
+# ---------------------------------------------------------------- prefab replacer, favorites, find references, align
+
+ICONS.update({
+    "material": '<circle cx="8" cy="8" r="6" fill="#C46A4E"/><ellipse cx="6" cy="6" rx="2.2" ry="1.5" fill="#F0B9A6"/>',
+    "folder": '<path d="M1.5 4 Q1.5 3 2.5 3 H6.5 L8 4.5 H13.5 Q14.5 4.5 14.5 5.5 V12.5 Q14.5 13.5 13.5 13.5 H2.5 Q1.5 13.5 1.5 12.5 Z" fill="#C9A227"/>',
+    "picker": '<circle cx="8" cy="8" r="4.5" fill="none" stroke="#C8C8C8" stroke-width="1.3"/><circle cx="8" cy="8" r="1.4" fill="#C8C8C8"/>',
+    "minus": '<rect x="3.5" y="7" width="9" height="2" rx="1" fill="#BDBDBD"/>',
+    "info": '<circle cx="8" cy="8" r="7" fill="#3F7FD0"/><rect x="7.2" y="7" width="1.6" height="5" fill="#FFFFFF"/><rect x="7.2" y="4" width="1.6" height="1.6" fill="#FFFFFF"/>',
+    "star": '<path d="M8 1.5 9.9 5.6 14.3 6.1 11 9.1 11.9 13.5 8 11.3 4.1 13.5 5 9.1 1.7 6.1 6.1 5.6Z" fill="#F4BC02"/>',
+})
+
+
+def object_field(x, y, w, ic, name):
+    out = field(x, y, w, 20)
+    out += icon(ic, x + 4, y + 2) + t(x + 24, y + 14.5, name, 12.5)
+    out += r(x + w - 20, y + 1, 19, 18, "#3A3A3A", rx=2) + icon("picker", x + w - 19, y + 2)
+    return out
+
+
+def helpbox(x, y, w, lines, ic="info"):
+    h = 16 + 16 * len(lines)
+    out = r(x, y, w, h, "#454545", rx=3, stroke="#2B2B2B")
+    if ic:
+        out += icon(ic, x + 10, y + h / 2 - 9, 18)
+    tx = x + (38 if ic else 10)
+    for i, line in enumerate(lines):
+        out += t(tx, y + 20 + i * 16, line, 12)
+    return out, h
+
+
+def toggle_row(x, fx, y, label, checked):
+    return t(x + 12, y + 15, label, 13) + toggle(fx, y + 3, checked)
+
+
+def prefab_replacer():
+    W, H = 520, 440
+    x, y, w, wh = 30, 30, 460, 380
+    body = stage(W, H) + window(x, y, w, wh, "Prefab Replacer", "prefab")
+    fx = x + 150
+    fw = x + w - 10 - fx
+    cy = y + 38
+    body += t(x + 12, cy + 15, "Prefab", 13) + object_field(fx, cy, fw, "prefab", "Tree_Oak"); cy += 24
+    body += toggle_row(x, fx, cy, "Keep Rotation", True); cy += 24
+    body += toggle_row(x, fx, cy, "Keep Scale", True); cy += 24
+    body += toggle_row(x, fx, cy, "Keep Name", False); cy += 24 + 10
+    box, bh = helpbox(x + 6, cy, w - 12, ["Each selected object becomes an instance of 'Tree_Oak'",
+                                          "at the same spot in the Hierarchy. Their children are",
+                                          "removed (Undo brings them back)."])
+    body += box
+    cy += bh + 8
+    body += t(x + 12, cy + 15, "Selected (6)", 13, TEXT, weight=700); cy += 24
+    for i in range(4):
+        name = "Placeholder_Tree" + ("" if i == 0 else f" ({i})")
+        body += icon("go", x + 12, cy + 2) + t(x + 34, cy + 14.5, name, 12.5)
+        cy += 21
+    body += mini_button(x + 8, y + wh - 38, w - 16, 28, "Replace 6 Object(s)", size=13.5)
+    return svg(W, H, body)
+
+
+def favorites():
+    W, H = 520, 440
+    x, y, w, wh = 30, 30, 460, 380
+    body = stage(W, H) + window(x, y, w, wh, "Favorites", "star")
+    ty = y + 30
+    body += r(x, ty, w, 26, TOOLBAR) + ln(x, ty + 26, x + w, ty + 26, LINE)
+    body += toolbar_button(x, ty, 96, 26, "Add Selection")
+    body += ln(x + w - 54, ty + 3, x + w - 54, ty + 23, LINE) + toolbar_button(x + w - 54, ty, 54, 26, "Clear")
+
+    rows = [("prefab", "Player"), ("scene", "MainMenu"), ("material", "M_Ground"), ("script", "PlayerController"),
+            ("folder", "Audio"), ("scene", "Boot"), ("prefab", "Tree_Oak"), ("material", "M_Water")]
+    cy = ty + 26 + 4
+    for ic, name in rows:
+        if name == "M_Ground":
+            body += r(x, cy, w, 22, SEL)
+        body += icon(ic, x + 8, cy + 3) + t(x + 30, cy + 15.5, name, 13, "#FFFFFF" if name == "M_Ground" else TEXT)
+        body += icon("minus", x + w - 26, cy + 3)
+        cy += 22
+
+    # An asset being dragged in from the Project window.
+    body += f'<path d="M{x + 8} {cy + 4} H{x + w - 8}" stroke="{ACCENT}" stroke-width="2" stroke-dasharray="5 4"/>'
+    chip_x, chip_y = x + 150, cy + 16
+    body += f'<g filter="url(#shadow)">{r(chip_x, chip_y, 150, 26, "#2D2D2D", rx=4, stroke="#191919")}</g>'
+    body += icon("prefab", chip_x + 8, chip_y + 5) + t(chip_x + 30, chip_y + 17.5, "Enemy_Spawner", 12.5)
+    body += f'<circle cx="{chip_x + 150}" cy="{chip_y}" r="8" fill="#3FB950"/><path d="M{chip_x + 146} {chip_y} H{chip_x + 154} M{chip_x + 150} {chip_y - 4} V{chip_y + 4}" stroke="#FFFFFF" stroke-width="1.8"/>'
+    body += f'<path transform="translate({chip_x + 120},{chip_y + 14})" d="M0 0 V15 L4 11.5 L6.8 17.5 L9 16.5 L6.3 10.6 H11.5 Z" fill="#FFFFFF" stroke="#111" stroke-width="1" stroke-linejoin="round"/>'
+
+    body += t(x + w / 2, y + wh - 12, "Drag assets in · double-click to open · drag out to use", 11, "#8A8A8A", anchor="middle")
+    return svg(W, H, body)
+
+
+def find_references():
+    W, H = 520, 440
+    x, y, w, wh = 30, 30, 460, 380
+    body = stage(W, H) + window(x, y, w, wh, "Find References", "search")
+    fx = x + 150
+    cy = y + 38
+    body += t(x + 12, cy + 15, "Asset", 13) + object_field(fx, cy, x + w - 10 - fx, "material", "M_Ground"); cy += 26
+    body += mini_button(x + 8, cy, w - 16 - 108, 24, "Find References", size=12.5)
+    body += mini_button(x + w - 8 - 100, cy, 100, 24, "Use Selection", size=12.5); cy += 34
+
+    body += t(x + 12, cy + 15, "Used by 4 asset(s)", 13, TEXT, weight=700); cy += 22
+    for ic, path in [("prefab", "Assets/Prefabs/Floor.prefab"), ("prefab", "Assets/Prefabs/Ramp.prefab"),
+                     ("scene", "Assets/Scenes/Level_01.unity"), ("scene", "Assets/Scenes/Level_02.unity")]:
+        body += icon(ic, x + 12, cy + 2) + t(x + 34, cy + 14.5, path, 12.5)
+        cy += 21
+    cy += 10
+    body += t(x + 12, cy + 15, "In open scenes (2)", 13, TEXT, weight=700); cy += 22
+    for label in ["Level_01 > Ground (MeshRenderer)", "Level_01 > Props/Platform_02 (MeshRenderer)"]:
+        body += icon("go", x + 12, cy + 2) + t(x + 34, cy + 14.5, label, 12.5)
+        cy += 21
+
+    fy = y + wh - 28
+    body += t(x + 10, fy + 14, "1284 assets indexed", 11, "#9A9A9A")
+    body += mini_button(x + w - 8 - 92, fy, 92, 18, "Rebuild Index", size=11)
+    return svg(W, H, body)
+
+
+def align_distribute():
+    W, H = 520, 440
+    x, y, w, wh = 30, 30, 460, 222
+    body = stage(W, H) + window(x, y, w, wh, "Align & Distribute")
+    fx = x + 150
+    fw = x + w - 10 - fx
+    cy = y + 38
+    body += t(x + 12, cy + 15, "Relative To", 13) + r(fx, cy, fw, 20, "#515151", rx=3, stroke="#2E2E2E")
+    body += t(fx + 7, cy + 14.5, "Selection", 12.5) + icon("dropdown", fx + fw - 20, cy + 3); cy += 24
+    body += toggle_row(x, fx, cy, "Use Renderer Bounds", True); cy += 24 + 10
+
+    colors = ["#ED615A", "#99D959", "#6199F2"]
+    bw = (w - 16 - 22 - 12) / 4
+    for axis, name in enumerate("XYZ"):
+        body += t(x + 12, cy + 16, name, 13.5, colors[axis], weight=700)
+        for j, label in enumerate(["Min", "Center", "Max", "Distribute"]):
+            body += mini_button(x + 30 + j * (bw + 4), cy + 1, bw, 21, label, size=12.5)
+        cy += 26
+    cy += 6
+    box, _ = helpbox(x + 6, cy, w - 12, ["4 objects selected."], ic=None)
+    body += box
+
+    # Before / after: aligning four boxes on Y > Min.
+    sy = y + wh + 34
+    body += r(30, sy, 460, 140, CARD, rx=10, stroke=CARD_BORDER)
+    heights = [(34, 18), (22, 44), (40, 0), (28, 30)]
+    base = sy + 104
+    for k, (bh, lift) in enumerate(heights):
+        body += r(58 + k * 40, base - bh - lift, 28, bh, ACCENT, rx=3, opacity=0.9)
+    body += f'<path d="M232 {sy + 70} H268 M260 {sy + 62} L268 {sy + 70} L260 {sy + 78}" fill="none" stroke="{DESC}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
+    for k, (bh, _) in enumerate(heights):
+        body += r(300 + k * 40, base - bh, 28, bh, ACCENT, rx=3, opacity=0.9)
+    body += f'<path d="M290 {base} H470" stroke="#E5534B" stroke-width="1.6" stroke-dasharray="5 4"/>'
+    body += t(122, sy + 128, "Before", 12.5, DESC, anchor="middle")
+    body += t(384, sy + 128, "Y › Min", 12.5, DESC, anchor="middle")
+    return svg(W, H, body)
+
+
 FILES = {
     "banner.svg": banner,
     "hierarchy.svg": hierarchy,
@@ -623,6 +809,10 @@ FILES = {
     "batch-renamer.svg": batch_renamer,
     "shortcuts.svg": shortcuts,
     "runtime.svg": runtime,
+    "prefab-replacer.svg": prefab_replacer,
+    "favorites.svg": favorites,
+    "find-references.svg": find_references,
+    "align-distribute.svg": align_distribute,
 }
 
 for filename, make in FILES.items():

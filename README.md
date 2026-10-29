@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="Documentation~/images/banner.svg" alt="BerTaDEV Toolkit: nine editor tools and three runtime helpers for Unity" width="100%">
+  <img src="Documentation~/images/banner.svg" alt="BerTaDEV Toolkit: thirteen editor tools and four runtime helpers for Unity" width="100%">
 </p>
 
 # BerTaDEV Toolkit for Unity
 
-Small tools that remove everyday friction in Unity, with no third-party dependencies. The editor tools are editor-only. The three [runtime helpers](#runtime-helpers) live in their own small assembly (`BerTaDEV.Toolkit`).
+Small tools that remove everyday friction in Unity, with no third-party dependencies. The editor tools are editor-only. The four [runtime helpers](#runtime-helpers) live in their own small assembly (`BerTaDEV.Toolkit`).
 
 <p align="center">
   <img src="Documentation~/images/hierarchy.svg" alt="Hierarchy before and after: header rows, active toggles, component icons and missing script warnings" width="100%">
@@ -17,6 +17,10 @@ Small tools that remove everyday friction in Unity, with no third-party dependen
 | **Play From First Build Scene** | Play Mode always starts from build scene #0, and you come back to the scenes you were editing | *Tools > BerTaDEV > Play From First Build Scene* |
 | **Missing Script Finder** | Finds "Missing (Mono Script)" components in open scenes, Prefab Mode and every prefab under `Assets/`, and removes them | *Tools > BerTaDEV > Missing Script Finder* |
 | **Batch Renamer** | Rename many GameObjects or assets at once: find/replace (regex), prefix/suffix, numbering, case, live preview, undo | *Tools > BerTaDEV > Batch Renamer* |
+| **Prefab Replacer** | Swap the selected objects for a prefab, keeping position, parent and Hierarchy order (rotation, scale and name optional) | *Tools > BerTaDEV > Prefab Replacer* |
+| **Find References** | Which assets, and which objects in the open scenes, use this asset? | Right-click an asset > *BerTaDEV > Find References* |
+| **Align & Distribute** | Line the selection up on X/Y/Z (min, center, max) by bounds or pivots, or space it out evenly | *Tools > BerTaDEV > Align And Distribute* |
+| **Favorites** | Drag assets and folders into a list; click to ping, double-click to open, drag out to use | *Tools > BerTaDEV > Favorites* |
 | **Drop To Ground** | Drops the selection onto the collider below it. `Shift+End` also rotates it to match the surface | `End` / `Shift+End` |
 | **Selection History** | Back and forward through what you selected, like a browser | `Alt+Left` / `Alt+Right` |
 | **Screenshot** | Saves the Game view to `<Project>/Screenshots`, 1x to 4x resolution | `F12` |
@@ -40,6 +44,20 @@ All options live in **Edit > Preferences > BerTaDEV Toolkit**. Every shortcut ca
 **Batch Renamer**: the preview updates as you type, and numbering follows the order you see in the Hierarchy (or the Project window for assets).
 
 <p align="center">
+  <img src="Documentation~/images/prefab-replacer.svg" alt="Prefab Replacer replacing six placeholders with Tree_Oak" width="49%">
+  <img src="Documentation~/images/favorites.svg" alt="Favorites window with an asset being dragged in" width="49%">
+</p>
+
+**Prefab Replacer** (left): block a level out with placeholders, then swap them for the real prefab in one click; one Undo puts everything back. **Favorites** (right): saved per project and per user, so it doesn't end up in version control.
+
+<p align="center">
+  <img src="Documentation~/images/find-references.svg" alt="Find References listing the prefabs, scenes and scene objects that use a material" width="49%">
+  <img src="Documentation~/images/align-distribute.svg" alt="Align and Distribute window, and four boxes aligned on Y min" width="49%">
+</p>
+
+**Find References** (left): the first search indexes `Assets/` (a few seconds on big projects); after that, answers are instant until something in the project changes. It also finds prefab instances and script users in the open scenes. **Align & Distribute** (right): *Relative To: Active Object* lines everything up with the object you clicked last.
+
+<p align="center">
   <img src="Documentation~/images/shortcuts.svg" alt="Shortcuts: End to drop to ground, Alt+arrows for selection history, F12 for screenshots" width="100%">
 </p>
 
@@ -54,6 +72,7 @@ All options live in **Edit > Preferences > BerTaDEV Toolkit**. Every shortcut ca
 | **`[ReadOnlyInspector]`** | Shows a serialized field greyed out so you can watch it but not edit it. Structs stay expandable | Put it on a field |
 | **UI Follow To World** | Keeps a UI element (health bar, name tag, marker) over a world object, with an offset. Hides it while the target is behind the camera | *Add Component > BerTaDEV > UI Follow To World* |
 | **Beta GUI** | Corner overlay with product and company name, version, FPS and your own build number. Can be limited to Development Builds | *Add Component > BerTaDEV > Beta GUI* |
+| **UI Scroll UV** | Scrolls a RawImage's texture forever (backgrounds, loading stripes). It tiles at the texture's own size, or at a tile size you pick, so it never stretches | *Add Component > BerTaDEV > UI Scroll UV* |
 
 ```csharp
 using BerTaDEV.Toolkit;
@@ -67,6 +86,8 @@ public class PlayerHealth : MonoBehaviour
 ```
 
 **UI Follow To World** moves the element's anchors to the target's screen position, so put it on a UI element whose parent covers the whole screen and keep its *Pos X/Y* at 0. It uses `Camera.main` unless you assign a camera.
+
+**UI Scroll UV** needs the texture's *Wrap Mode* set to *Repeat* (it warns you if it isn't). Positive *Speed X* scrolls left, positive *Speed Y* scrolls down.
 
 ## Install
 
@@ -82,7 +103,7 @@ Or add this line to `Packages/manifest.json`:
 "com.bertadev.toolkit": "https://github.com/BerTaDev/bertadev-unity-toolkit.git"
 ```
 
-To pin a version, add `#v1.1.0` to the end of the URL.
+To pin a version, add `#v1.2.0` to the end of the URL.
 
 Requires Unity 2022.3 or newer. Built and tested on Unity 6.3.
 
@@ -95,13 +116,17 @@ Requires Unity 2022.3 or newer. Built and tested on Unity 6.3.
 
 ## Türkçe
 
-Unity'de her gün uğraştığın küçük işleri hızlandıran araçlar. Editör araçları sadece editörde çalışır; üç runtime yardımcısı ayrı bir assembly'de (`BerTaDEV.Toolkit`).
+Unity'de her gün uğraştığın küçük işleri hızlandıran araçlar. Editör araçları sadece editörde çalışır; dört runtime yardımcısı ayrı bir assembly'de (`BerTaDEV.Toolkit`).
 
 - **Hiyerarşi**: `--- İsim ---` diye adlandırdığın objeler başlık olur; her satırda aktif/pasif kutusu ve component ikonları.
 - **Scene Switcher**: Projedeki tüm sahneler tek listede; tek tıkla aç, ekle ya da oynat.
 - **Play From First Build Scene**: Play'e her zaman ilk build sahnesinden gir.
 - **Missing Script Finder**: Sahnelerde ve prefablarda kayıp script'leri bulur, siler.
 - **Batch Renamer**: Toplu yeniden adlandırma (bul/değiştir, regex, önek/sonek, numaralandırma, önizleme, geri al).
+- **Prefab Replacer**: Seçili objeleri pozisyon, parent ve sırayı koruyarak bir prefab ile değiştirir.
+- **Find References**: Bir asset'i hangi asset'lerin ve açık sahnelerdeki hangi objelerin kullandığını bulur.
+- **Align & Distribute**: Seçili objeleri X/Y/Z ekseninde hizalar ya da aralarını eşit açar.
+- **Favorites**: Sık kullandığın asset'leri sürükleyip bırakabildiğin hızlı erişim listesi.
 - **Drop To Ground**: `End` ile seçili objeleri yere indir, `Shift+End` ile yüzeye hizala.
 - **Selection History**: `Alt+Sol` / `Alt+Sağ` ile seçim geçmişinde gez.
 - **Screenshot**: `F12` ile Game view ekran görüntüsü (1x-4x).
@@ -112,6 +137,7 @@ Runtime yardımcıları (`using BerTaDEV.Toolkit;`):
 - **`[ReadOnlyInspector]`**: Alanı Inspector'da gösterir ama düzenlenemez yapar (gri). Struct'lar açılabilir kalır.
 - **UI Follow To World**: Can barı, isim etiketi gibi UI elemanlarını dünyadaki bir objenin üstünde tutar; obje kameranın arkasındayken gizler.
 - **Beta GUI**: Köşede oyun adı, şirket, versiyon, FPS ve build numarası gösterir. İstersen sadece Development Build'lerde.
+- **UI Scroll UV**: RawImage dokusunu sonsuz döngüde kaydırır (arka planlar, loading şeritleri). Dokunun Wrap Mode'u Repeat olmalı.
 
 Kurulum: Package Manager > + > *Add package from git URL* > `https://github.com/BerTaDev/bertadev-unity-toolkit.git`
 
