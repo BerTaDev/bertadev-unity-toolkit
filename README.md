@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="Documentation~/images/banner.svg" alt="BerTaDEV Toolkit: nine everyday editor tools for Unity" width="100%">
+  <img src="Documentation~/images/banner.svg" alt="BerTaDEV Toolkit: nine editor tools and three runtime helpers for Unity" width="100%">
 </p>
 
 # BerTaDEV Toolkit for Unity
 
-Small editor tools that remove everyday friction in Unity. Editor-only (nothing ends up in your builds), no third-party dependencies.
+Small tools that remove everyday friction in Unity, with no third-party dependencies. The editor tools are editor-only. The three [runtime helpers](#runtime-helpers) live in their own small assembly (`BerTaDEV.Toolkit`).
 
 <p align="center">
   <img src="Documentation~/images/hierarchy.svg" alt="Hierarchy before and after: header rows, active toggles, component icons and missing script warnings" width="100%">
@@ -43,6 +43,31 @@ All options live in **Edit > Preferences > BerTaDEV Toolkit**. Every shortcut ca
   <img src="Documentation~/images/shortcuts.svg" alt="Shortcuts: End to drop to ground, Alt+arrows for selection history, F12 for screenshots" width="100%">
 </p>
 
+## Runtime helpers
+
+<p align="center">
+  <img src="Documentation~/images/runtime.svg" alt="Runtime helpers: a read-only Inspector field, a health bar following a character, and the Beta GUI overlay" width="100%">
+</p>
+
+| Helper | What it does | How |
+| --- | --- | --- |
+| **`[ReadOnlyInspector]`** | Shows a serialized field greyed out so you can watch it but not edit it. Structs stay expandable | Put it on a field |
+| **UI Follow To World** | Keeps a UI element (health bar, name tag, marker) over a world object, with an offset. Hides it while the target is behind the camera | *Add Component > BerTaDEV > UI Follow To World* |
+| **Beta GUI** | Corner overlay with product and company name, version, FPS and your own build number. Can be limited to Development Builds | *Add Component > BerTaDEV > Beta GUI* |
+
+```csharp
+using BerTaDEV.Toolkit;
+using UnityEngine;
+
+public class PlayerHealth : MonoBehaviour
+{
+    [SerializeField] int maxHealth = 100;
+    [SerializeField, ReadOnlyInspector] int currentHealth;
+}
+```
+
+**UI Follow To World** moves the element's anchors to the target's screen position, so put it on a UI element whose parent covers the whole screen and keep its *Pos X/Y* at 0. It uses `Camera.main` unless you assign a camera.
+
 ## Install
 
 **Window > Package Manager > + > Add package from git URL...** and paste:
@@ -57,7 +82,9 @@ Or add this line to `Packages/manifest.json`:
 "com.bertadev.toolkit": "https://github.com/BerTaDev/bertadev-unity-toolkit.git"
 ```
 
-Requires Unity 2022.3 or newer. Built and compiled against Unity 6.3.
+To pin a version, add `#v1.1.0` to the end of the URL.
+
+Requires Unity 2022.3 or newer. Built and tested on Unity 6.3.
 
 ## Notes
 
@@ -68,7 +95,7 @@ Requires Unity 2022.3 or newer. Built and compiled against Unity 6.3.
 
 ## Türkçe
 
-Unity'de her gün uğraştığın küçük işleri hızlandıran editör araçları. Sadece editörde çalışır, build'e hiçbir şey girmez.
+Unity'de her gün uğraştığın küçük işleri hızlandıran araçlar. Editör araçları sadece editörde çalışır; üç runtime yardımcısı ayrı bir assembly'de (`BerTaDEV.Toolkit`).
 
 - **Hiyerarşi**: `--- İsim ---` diye adlandırdığın objeler başlık olur; her satırda aktif/pasif kutusu ve component ikonları.
 - **Scene Switcher**: Projedeki tüm sahneler tek listede; tek tıkla aç, ekle ya da oynat.
@@ -79,6 +106,12 @@ Unity'de her gün uğraştığın küçük işleri hızlandıran editör araçla
 - **Selection History**: `Alt+Sol` / `Alt+Sağ` ile seçim geçmişinde gez.
 - **Screenshot**: `F12` ile Game view ekran görüntüsü (1x-4x).
 - **Scene Auto Save**: Sahneleri belirli aralıklarla otomatik kaydet (varsayılan kapalı).
+
+Runtime yardımcıları (`using BerTaDEV.Toolkit;`):
+
+- **`[ReadOnlyInspector]`**: Alanı Inspector'da gösterir ama düzenlenemez yapar (gri). Struct'lar açılabilir kalır.
+- **UI Follow To World**: Can barı, isim etiketi gibi UI elemanlarını dünyadaki bir objenin üstünde tutar; obje kameranın arkasındayken gizler.
+- **Beta GUI**: Köşede oyun adı, şirket, versiyon, FPS ve build numarası gösterir. İstersen sadece Development Build'lerde.
 
 Kurulum: Package Manager > + > *Add package from git URL* > `https://github.com/BerTaDev/bertadev-unity-toolkit.git`
 

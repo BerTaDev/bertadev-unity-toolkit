@@ -201,12 +201,12 @@ def banner():
     body += "</g>"
     body += r(0.5, 0.5, W - 1, H - 1, "none", rx=16, stroke="#2A3242")
 
-    body += t(56, 92, "UNITY EDITOR PACKAGE", 12.5, ACCENT, weight=700, ls=2.5)
+    body += t(56, 92, "UNITY PACKAGE", 12.5, ACCENT, weight=700, ls=2.5)
     body += t(54, 146, "BerTaDEV Toolkit", 50, "#F0F4FA", weight=700)
-    body += t(56, 186, "Nine small editor tools that take the", 18, "#A7B1C2")
-    body += t(56, 211, "everyday friction out of Unity.", 18, "#A7B1C2")
+    body += t(56, 186, "Nine editor tools and three runtime helpers", 18, "#A7B1C2")
+    body += t(56, 211, "that take the everyday friction out of Unity.", 18, "#A7B1C2")
     body += r(56, 232, 392, 34, "#0F131A", rx=17, stroke="#2C3546")
-    body += t(76, 254, "com.bertadev.toolkit  ·  v1.0.0  ·  Unity 2022.3+", 13, "#C9D4E5", cls="mono")
+    body += t(76, 254, "com.bertadev.toolkit  ·  v1.1.0  ·  Unity 2022.3+", 13, "#C9D4E5", cls="mono")
 
     x0, y0, tw, th, gap = 580, 47, 136, 62, 10
     for i, (label, paths) in enumerate(BANNER_ICONS):
@@ -544,6 +544,77 @@ def shortcuts():
     return svg(W, H, body)
 
 
+# ---------------------------------------------------------------- runtime helpers
+
+def game_view(x, y, w, h, sky_top, sky_bottom, ground, grad_id):
+    defs = f'<linearGradient id="{grad_id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{sky_top}"/><stop offset="1" stop-color="{sky_bottom}"/></linearGradient>'
+    out = r(x, y, w, h, "#2D333B", rx=6, stroke="#444C56")
+    out += r(x + 1, y + 1, w - 2, 16, "#262C34", rx=5) + r(x + 1, y + 10, w - 2, 7, "#262C34") + t(x + 9, y + 13, "Game", 9.5, DESC)
+    out += r(x + 6, y + 21, w - 12, h - 27, f"url(#{grad_id})")
+    out += r(x + 6, y + h - 46, w - 12, 40, ground)
+    return out, defs
+
+
+def runtime():
+    W, H = 1040, 300
+    body = stage(W, H)
+    defs = ""
+    cw, gap, cy0 = 316, 16, 30
+    cards = [
+        ("[ReadOnlyInspector]", "Shows the value, locks the field.", "mono"),
+        ("UI Follow To World", "Health bars and name tags that follow.", None),
+        ("Beta GUI", "Name, version, FPS and build on screen.", None),
+    ]
+    for i, (title, desc, cls) in enumerate(cards):
+        cx = 30 + i * (cw + gap)
+        body += r(cx, cy0, cw, 240, CARD, rx=12, stroke=CARD_BORDER)
+        body += t(cx + 20, cy0 + 34, title, 17 if cls is None else 16, TITLE, weight=700, cls=cls)
+        body += t(cx + 20, cy0 + 222, desc, 12.5, DESC)
+        x, y, w = cx + 20, cy0 + 50, cw - 40
+
+        if i == 0:
+            body += r(x, y, w, 104, WIN, rx=4, stroke="#1E1E1E")
+            body += r(x + 1, y + 1, w - 2, 24, "#3E3E3E", rx=3)
+            body += icon("arrow_d", x + 4, y + 5) + toggle(x + 20, y + 6, True, 13) + icon("script", x + 39, y + 5)
+            body += t(x + 60, y + 17.5, "Player Health (Script)", 12.5, TEXT, weight=600) + icon("dots", x + w - 20, y + 5)
+            fields = [("Max Health", "100", True), ("Current Health", "73", False), ("Is Dead", None, False)]
+            fy = y + 30
+            for label, value, editable in fields:
+                op = None if editable else 0.45
+                body += t(x + 14, fy + 14, label, 12.5, TEXT, opacity=op)
+                if value is None:
+                    body += f'<g opacity="{op}">{toggle(x + 128, fy + 2, False, 14)}</g>'
+                else:
+                    body += f'<g opacity="{op if op else 1}">{field(x + 128, fy, w - 136, 19, value)}</g>'
+                fy += 24
+            body += t(x, y + 128, "[SerializeField, ReadOnlyInspector]", 11.5, ACCENT, cls="mono")
+            body += t(x, y + 145, "int currentHealth;", 11.5, TITLE, cls="mono")
+        elif i == 1:
+            view, d = game_view(x, y, w, 150, "#35587F", "#6A93BC", "#4C7A3F", "sky1")
+            body += view
+            defs += d
+            ground_y = y + 150 - 46
+            px = x + 120
+            body += r(px, ground_y - 40, 20, 40, "#D9DEE5", rx=10)
+            body += t(px + 10, ground_y - 71, "Player", 10.5, "#FFFFFF", anchor="middle", weight=600)
+            body += r(px - 20, ground_y - 66, 60, 7, "#14181D", rx=2) + r(px - 19, ground_y - 65, 41, 5, "#57C26A", rx=1.5)
+            body += f'<path d="M{px + 10} {ground_y - 58} V{ground_y - 43}" stroke="{ACCENT}" stroke-width="1.4" stroke-dasharray="3 3"/>'
+            body += t(px + 16, ground_y - 47, "offset", 10, ACCENT)
+            ex = x + 214
+            body += r(ex, ground_y - 24, 12, 24, "#C98A8A", rx=6)
+            body += r(ex - 9, ground_y - 33, 30, 5, "#14181D", rx=1.5) + r(ex - 8, ground_y - 32, 12, 3, "#E5534B", rx=1)
+        else:
+            view, d = game_view(x, y, w, 150, "#A9C9E8", "#DCEAF6", "#7FB069", "sky2")
+            body += view
+            defs += d
+            body += f'<circle cx="{x + w - 40}" cy="{y + 50}" r="13" fill="#F7D44A"/>'
+            body += f'<path d="M{x + 6} {y + 104} Q{x + 80} {y + 78} {x + 150} {y + 104} T{x + w - 6} {y + 100} V{y + 144} H{x + 6} Z" fill="#94C27C"/>'
+            lines = [("MyGame By:BerTaDEV", "#000000"), ("Version: 0.4.2", "#000000"), ("FPS : 144", "#E01E1E"), ("build : 37", "#E01E1E")]
+            for j, (text, color) in enumerate(lines):
+                body += t(x + 14, y + 38 + j * 15, text, 11.5, color)
+    return svg(W, H, body, defs)
+
+
 FILES = {
     "banner.svg": banner,
     "hierarchy.svg": hierarchy,
@@ -551,6 +622,7 @@ FILES = {
     "missing-scripts.svg": missing_scripts,
     "batch-renamer.svg": batch_renamer,
     "shortcuts.svg": shortcuts,
+    "runtime.svg": runtime,
 }
 
 for filename, make in FILES.items():

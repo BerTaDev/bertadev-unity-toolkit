@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.0] - 2026-10-30
+
+### Added
+- Runtime assembly `BerTaDEV.Toolkit` with three helpers:
+  - `[ReadOnlyInspector]` attribute: greyed-out Inspector fields; structs stay expandable.
+  - `UIFollowToWorld`: keeps a UI element over a world target, optional camera, hides behind the camera.
+  - `BetaGUI`: build info overlay (name, company, version, FPS, build number), optional Development Builds only.
+- README illustrations.
+
 ## [1.0.0] - 2026-10-29
 
 ### Added
