@@ -1,8 +1,8 @@
 {
   "name": "com.bertadev.toolkit",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "displayName": "BerTaDEV Toolkit",
-  "description": "Everyday editor tools: hierarchy headers, active toggles and component icons, scene switcher, play from first scene, missing script finder, batch renamer, drop to ground, selection history, screenshots and scene auto save. Runtime helpers: [ReadOnlyInspector], UI Follow To World and Beta GUI.",
+  "description": "Everyday editor tools: hierarchy headers, active toggles and component icons, scene switcher, play from first scene, missing script finder, batch renamer, prefab replacer, find references, align and distribute, favorites, drop to ground, selection history, screenshots and scene auto save. Runtime helpers: [ReadOnlyInspector], UI Follow To World, UI Scroll UV and Beta GUI.",
   "unity": "2022.3",
   "keywords": [
     "editor",
@@ -20,6 +20,7 @@
     "com.unity.modules.imgui": "1.0.0",
     "com.unity.modules.physics": "1.0.0",
     "com.unity.modules.screencapture": "1.0.0",
-    "com.unity.modules.ui": "1.0.0"
+    "com.unity.modules.ui": "1.0.0",
+    "com.unity.ugui": "1.0.0"
   }
 }

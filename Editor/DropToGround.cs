@@ -33,7 +33,7 @@ namespace BerTaDEV.Toolkit
             Physics.SyncTransforms();
             foreach (var t in targets)
             {
-                var bounds = GetBounds(t);
+                var bounds = BoundsUtility.GetWorldBounds(t);
                 if (!TryFindGround(t, bounds.center, out var ground))
                 {
                     missed++;
@@ -45,7 +45,7 @@ namespace BerTaDEV.Toolkit
                 {
                     t.rotation = Quaternion.FromToRotation(t.up, ground.normal) * t.rotation;
                     Physics.SyncTransforms();
-                    bounds = GetBounds(t);
+                    bounds = BoundsUtility.GetWorldBounds(t);
                 }
                 t.position += Vector3.up * (ground.point.y - bounds.min.y);
 
@@ -77,30 +77,6 @@ namespace BerTaDEV.Toolkit
                 }
             }
             return closest < float.PositiveInfinity;
-        }
-
-        /// <summary>World bounds of the visible meshes/sprites, falling back to colliders, then to the pivot.</summary>
-        static Bounds GetBounds(Transform t)
-        {
-            var bounds = new Bounds(t.position, Vector3.zero);
-            bool found = false;
-
-            foreach (var renderer in t.GetComponentsInChildren<Renderer>())
-            {
-                if (!renderer.enabled) continue;
-                if (!(renderer is MeshRenderer || renderer is SkinnedMeshRenderer || renderer is SpriteRenderer)) continue;
-                if (found) bounds.Encapsulate(renderer.bounds);
-                else { bounds = renderer.bounds; found = true; }
-            }
-            if (found) return bounds;
-
-            foreach (var collider in t.GetComponentsInChildren<Collider>())
-            {
-                if (!collider.enabled || collider.isTrigger) continue;
-                if (found) bounds.Encapsulate(collider.bounds);
-                else { bounds = collider.bounds; found = true; }
-            }
-            return bounds;
         }
     }
 }

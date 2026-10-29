@@ -1,7 +1,9 @@
 {
     "name": "BerTaDEV.Toolkit",
     "rootNamespace": "BerTaDEV.Toolkit",
-    "references": [],
+    "references": [
+        "UnityEngine.UI"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
