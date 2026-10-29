@@ -1,7 +1,9 @@
 {
     "name": "BerTaDEV.Toolkit.Editor",
     "rootNamespace": "BerTaDEV.Toolkit",
-    "references": [],
+    "references": [
+        "BerTaDEV.Toolkit"
+    ],
     "includePlatforms": [
         "Editor"
     ],
