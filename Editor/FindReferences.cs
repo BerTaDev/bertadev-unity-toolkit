@@ -207,12 +207,15 @@ namespace BerTaDEV.Toolkit
             return hits;
         }
 
+        // Bookkeeping links every prefab instance has; they'd make each component of an instance look like a user.
+        static readonly HashSet<string> IgnoredProperties = new HashSet<string> { "m_CorrespondingSourceObject", "m_PrefabInstance", "m_PrefabAsset", "m_GameObject" };
+
         static bool ReferencesAsset(Component component, string path)
         {
             var property = new SerializedObject(component).GetIterator();
             while (property.Next(true))
             {
-                if (property.propertyType != SerializedPropertyType.ObjectReference) continue;
+                if (property.propertyType != SerializedPropertyType.ObjectReference || IgnoredProperties.Contains(property.name)) continue;
                 var value = property.objectReferenceValue;
                 // Comparing paths also catches sub-assets, like a mesh inside a model or a sprite inside a texture.
                 if (value != null && AssetDatabase.GetAssetPath(value) == path) return true;
